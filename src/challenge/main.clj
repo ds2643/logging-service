@@ -28,7 +28,7 @@
     :parse-fn
     #(->> (str/split % #",")
           (remove str/blank?))
-    :validate [#(->> (map tf/parse %) (not-any? nil?))
+    :validate [#(->> (map tf/parse %) (every? some?))
                "Must enter one more valid time-stamps"]]
    ["-h" "--help"]])
 

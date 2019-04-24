@@ -1,9 +1,23 @@
 # Log Analysis Tool
 This project attempts to implement a solution to Signafire's take-home exercise.
 
-Given a collection of time-stamps and a reference to a log-file (in csv format), this command-line application outputs answers to a set of predetermined queries.
+Given a collection of timestamps and a reference to a log-file (in csv format), this command-line application outputs answers to a set of predetermined queries (e.g., the number of connections open at a given set of times).
 
 ## Description
+
+## Problem Interpretation and Assumptions
+A log file of arbitrary length contains information describing connection events to a hypothetical service. Each of these entries contains an IP address, the time the connection as terminated, and the length of connection in milliseconds (units clarified by Gurgen).
+
+This application serves the purpose of surveying the amount and identity of connections from the log file active at a particular set of times. Additionally, some descriptive statistics are produced, including the average uptime.
+
+The following assumptions are implicit in this implementation:
+1. The predicate that tests to see if some timestamp falls within a log entry is *non-inclusive*. That is, timestamps falling at the starting or ending instants bounding an entry are not considered to be included in a range. For example, if a connection entry ends at `2017-10-23T12:00:00.000`, the timestamp `2017-10-23T12:00:00.000` does not fall into that range.
+
+2. Average uptime is calculated as follows (discussed with Gurgen over email): The sum of time intervals described in the log file is divided over the time from the earliest connection to latest disconnection. Overlap between intervals is not considered, as each connection is regarded independently.
+
+3. The log file data is assumed to be valid. Missing values are not checked for in processing the data. However, later iterations of such a program could implement such validation using something like schema validation. Moreover, duplicates in the csv data are not accounted for. For example, if the csv lists the same IP address connecting in overlapping intervals, each interval will be regarded independently. In other words, the IP is not used yet as a unique identifier.
+
+4. The command-line interface loosely obeys the problem specification. For example, rather than outputting a literal map, the results are pretty-printed to console. This change is intended to make the program easier to use.
 
 ## Use
 This application is run from the command-line, either from source or compiled artifact (i.e., java jar).
@@ -90,6 +104,12 @@ Packaged automated tests may be run from source:
 lein test
 ```
 
-## Directions for Improvement
-- Handling larger inputs
-- Ties are not addressed
+## Limitations and Directions for improvement
+1. Accomodating larger data sets:
+- The problem specification does not place bounds upon the size of the log file. In the suggested case in which this log file grows several orders of magnitude to GB or TB size, several scaling constraints will come into play. Firstly, the amount of runtime memory would be exhausted, since the entire dataset is currently read into memory as a clojure map (see references to `log-entries` in `challenge.analysis`). To address this problem, we could possibly expore the possibility of using streams to process the data. Such a design choice would limit the amount of data held in memory at any particular instant. As a conseqence, the apparatus used to analyze the data would need to be updated to accomodate streaming data-structures. 
+- Secondly, an additional constraint in *time* is introduced: The program would take much longer to produce results. Depending on the setting in which the program is used, this may or may not be a problem. However, if the results are required quickly, exploring some method of parallel or concurrent analysis might be in order. Such changes would require significant refactoring of `analysis`. The author's opinion is to avoid to such changes unless absolutely necessary, given that such complexity might introduce complexity and make the code harder to maintain.
+
+2. Testing story leaves much to be desired
+- Automated testing is currently limited to modest property and schema level testing (e.g., testing for a key expected to be present in a return value from a function). An approach lending further confidence to the implementation might be to include more example based tests.
+
+3. Ties in the minimum and maximum connections are currently ignored. For example, if two times share 3 connections and 3 connections is the minimum, both should be outputted. This behavior should be regarded as a bug. Updating the implementation to output a collection would be more appropriate.

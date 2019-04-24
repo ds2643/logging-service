@@ -21,8 +21,10 @@
   (fn [{:keys [endTs timeTaken]}]
     (let [period     (t/millis (edn/read-string timeTaken))
           end-time   (tf/parse endTs)
-          start-time (t/minus end-time period)]
-      (t/within? (t/interval start-time end-time) t))))
+          start-time (t/minus end-time period)
+          interval   (t/interval start-time end-time)]
+      ;; NOTE: test assumed not to be inclusive
+      (t/within? interval t))))
 
 (defn process-entries
   "Finds the subset of ip addresses in the log file active
@@ -32,7 +34,6 @@
         included       (filter includes-time? log-entries)]
     {:time     time
      :included (mapv :ip included)
-     ;; TODO: change count->connections
      :count    (count included)}))
 
 (defn make-reports [log-entries times]
