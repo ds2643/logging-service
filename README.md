@@ -3,8 +3,6 @@ This project attempts to implement a solution to Signafire's take-home exercise.
 
 Given a collection of timestamps and a reference to a log-file (in csv format), this command-line application outputs answers to a set of predetermined queries (e.g., the number of connections open at a given set of times).
 
-## Description
-
 ## Problem Interpretation and Assumptions
 A log file of arbitrary length contains information describing connection events to a hypothetical service. Each of these entries contains an IP address, the time the connection as terminated, and the length of connection in milliseconds (units clarified by Gurgen).
 
@@ -55,10 +53,11 @@ Statistics:
 ```
 
 Overview of flags:
+
 | short flag | long flag  | description                                           | default           | validation rules                                          |
 |------------|------------|-------------------------------------------------------|-------------------|-----------------------------------------------------------|
-| -t         | --times    | Comma-separated list of times upon which to run query | None              | Must be comma separated list of strings parsable as dates |
-| None       | --log-file | Path to log csv file                                  | resources/log.csv | File must exist                                           |
+| `-t`       | `--times`  | Comma-separated list of times upon which to run query | None              | Must be comma separated list of strings parsable as dates |
+| None       | `--log-file` | Path to log csv file                                  | resources/log.csv | File must exist                                           |
 
 ### Interpreting the Response
 The program output contains several indentation-denoted blocks of query results.
@@ -112,4 +111,5 @@ lein test
 2. Testing story leaves much to be desired
 - Automated testing is currently limited to modest property and schema level testing (e.g., testing for a key expected to be present in a return value from a function). An approach lending further confidence to the implementation might be to include more example based tests.
 
-3. Ties in the minimum and maximum connections are currently ignored. For example, if two times share 3 connections and 3 connections is the minimum, both should be outputted. This behavior should be regarded as a bug. Updating the implementation to output a collection would be more appropriate.
+3. Limitation in determining min and max connections:
+- Ties in the minimum and maximum connections are currently ignored. For example, if two times share 3 connections and 3 connections is the minimum, both should be outputted. This behavior should be regarded as a bug. Updating the implementation to output a collection would be more appropriate.

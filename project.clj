@@ -1,4 +1,4 @@
-(defproject challenge "0.1.0"
+(defproject challenge "0.1.0-SNAPSHOT"
   :description
   "Given a set of valid time-stamps, this CLI application 
    returns the set of active IP addresses in addition to
