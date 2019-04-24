@@ -9,7 +9,7 @@ A log file of arbitrary length contains information describing connection events
 This application serves the purpose of surveying the amount and identity of connections from the log file active at a particular set of times. Additionally, some descriptive statistics are produced, including the average uptime.
 
 The following assumptions are implicit in this implementation:
-1. The predicate that tests to see if some timestamp falls within a log entry is *non-inclusive*. That is, timestamps falling at the starting or ending instants bounding an entry are not considered to be included in a range. For example, if a connection entry ends at `2017-10-23T12:00:00.000`, the timestamp `2017-10-23T12:00:00.000` does not fall into that range.
+1. The predicate that tests to see if some timestamp falls within a log entry is *inclusive*. That is, timestamps falling at the starting or ending instants bounding an entry are considered to be included in a range. For example, if a connection entry ends at `2017-10-23T12:00:00.000`, the timestamp `2017-10-23T12:00:00.000` falls into that range.
 
 2. Average uptime is calculated as follows (discussed with Gurgen over email): The sum of time intervals described in the log file is divided over the time from the earliest connection to latest disconnection. Overlap between intervals is not considered, as each connection is regarded independently.
 

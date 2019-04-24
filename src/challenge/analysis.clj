@@ -23,7 +23,7 @@
           end-time   (tf/parse endTs)
           start-time (t/minus end-time period)
           interval   (t/interval start-time end-time)]
-      ;; NOTE: test assumed not to be inclusive
+      ;; NOTE: test assumed to be inclusive
       (t/within? interval t))))
 
 (defn process-entries
