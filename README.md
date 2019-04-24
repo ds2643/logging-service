@@ -34,22 +34,22 @@ lein run -t <list-of-timestamps> --log-file <path-to-log-file>
 
 For example:
 ```
-lein run -t 2017-10-23T12:00:00.000,2017-10-23T11:00:00.000
-Analyzing: file: resources/log.csv
-Time: 2017-10-23T12:00:00Z
-	Active IP addresses: 1.2.3.15
-	Count: 1
-Time: 2017-10-23T11:00:00Z
-	Active IP addresses:
-	Count: 0
+lein run -t 2017-10-23T11:59:59.9,2017-10-23T11:59:59.8
+Analyzing: file:/Users/shaked/career/challenges/signafire/challenge/resources/log.csv
+Time: 2017-10-23T11:59:59.900Z
+    Active IP addresses: 1.2.3.9, 1.2.3.19, 1.2.3.24, 1.2.3.15, 1.2.3.19
+    Count: 5
+Time: 2017-10-23T11:59:59.800Z
+    Active IP addresses: 1.2.3.24, 1.2.3.15, 1.2.3.19
+    Count: 3
 Statistics:
-	Total time elapsed: 3000300 milliseconds
-	Total uptime: 4740 milliseconds
-	Average connections: 0.002 connections
-	Fewest connections (0) at 2017-10-23T11:00:00Z
-	Most connections (1) at 2017-10-23T12:00:00Z
-	Earliest connection: 2017-10-23T11:59:59.700Z
-	Latest disconnection: 2017-10-23T12:50:00.000Z
+    Total time elapsed: 3000300 milliseconds
+    Total uptime: 4740 milliseconds
+    Average connections: 0.002 connections
+    Fewest connections (3) at 2017-10-23T11:59:59.800Z
+    Most connections (5) at 2017-10-23T11:59:59.900Z
+    Earliest connection: 2017-10-23T11:59:59.700Z
+    Latest disconnection: 2017-10-23T12:50:00.000Z
 ```
 
 Overview of flags:
